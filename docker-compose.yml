@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+    sfadxinfo:
+        build: sfadxinfo
+        image: sfadxinfo
+        #restart: always
+        restart: "no"
+        environment:
+            - TZ=Asia/Tokyo
+            - USERNAME=jdoe@acdxgs0hub.org
+            - CLIENTID=ids
+            - SFDCLOGINURL=https://test.salesforce.com
+        #volumes:
+        #    - ./openjdk/code:/code
+    apatchphp_webapp:
+        image: apatchphp_webapp
+        build: apatchphp_webapp
+        restart: "always"
+        depends_on:
+            - radisds
+        ports:
+            - "80"
+        environment:
+            TZ: Asia/Tokyo
+        #logging:
+        #    driver: "journald"
+        volumes:
+            - ./apatchphp_webapp/contents/:/var/www/html/
+    radisds:
+        image: redisds
+        build: redisds
+        restart: "always"
+        ports:
+            - "6379:6379"
+        # command: redis-server --appendonly yes
+        #volumes:
+        #    - /radis_data:/data
+    react_app:
+        image: react_app
+        build:
+            context: react_app
+            dockerfile: Dockerfile-pro
+        ports:
+            - "80:80"
+        # restart: always
+        environment:
+            - TZ=Asia/Tokyo

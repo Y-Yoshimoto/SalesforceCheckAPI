@@ -1,0 +1,25 @@
+# FROM node:latest
+FROM node:alpine AS builder
+LABEL maintaner='y-yoshimoto'
+
+RUN npx create-react-app my-app && \
+    rm -rf /my-app/src/*
+# Remove Sample
+WORKDIR /my-app
+COPY src/ /my-app/src/
+
+RUN yarn build
+
+# React App set Nginx
+FROM nginx
+LABEL  maintainer "y.yoshimoto"
+# コンテツファイルの設置
+COPY --from=builder /my-app/build/ /usr/share/nginx/html/
+
+# nginx設定ファイルの設置
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY server.conf /etc/nginx/conf.d/server.conf
+
+# コンテナ実行時の動作設定
+EXPOSE 80 443
+ENTRYPOINT ["/usr/sbin/nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]

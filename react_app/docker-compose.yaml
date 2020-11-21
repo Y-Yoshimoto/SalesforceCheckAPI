@@ -1,0 +1,15 @@
+version: "3"
+services:
+  react_app_dev:
+    image: react_app_dev
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    ports:
+      - "3000:3000"
+    # restart: always
+    environment:
+      - TZ=Asia/Tokyo
+    stdin_open: true
+    volumes:
+      - ./src:/my-app/src

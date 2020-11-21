@@ -1,0 +1,18 @@
+# FROM node:latest
+FROM node:alpine
+LABEL maintaner='y-yoshimoto'
+
+
+COPY ./package.json /package.json
+RUN npm install && \
+    npx create-react-app my-app && \
+    rm -rf /my-app/src/*
+# Remove Sample
+WORKDIR /my-app
+VOLUME /my-app
+COPY ./src /my-app/src
+
+EXPOSE 3000 
+
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+#ENTRYPOINT ["yarn", "start"]
