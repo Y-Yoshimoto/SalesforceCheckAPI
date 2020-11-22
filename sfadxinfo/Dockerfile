@@ -5,4 +5,5 @@ LABEL  maintainer "y.yoshimoto"
 COPY ./RequestAPICounts.sh /
 COPY ./sfadxinfo.pem /
 
-ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+#ENTRYPOINT [ "tail", "-f", "/dev/null" ]
+ENTRYPOINT [ "/bin/bash", "./RequestAPICounts.sh" ]

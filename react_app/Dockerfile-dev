@@ -1,16 +1,17 @@
-# FROM node:latest
-FROM node:alpine
+#FROM node:latest
+FROM node:14-alpine
 LABEL maintaner='y-yoshimoto'
+ENV APPNAME sfdx-api-graph
 
+RUN mkdir -p /$APPNAME/src && mkdir -p /$APPNAME/public
+WORKDIR /$APPNAME
 
-COPY ./package.json /package.json
-RUN npm install && \
-    npx create-react-app my-app && \
-    rm -rf /my-app/src/*
+COPY ./package.json /$APPNAME/package.json
+RUN yarn install 
+
 # Remove Sample
-WORKDIR /my-app
-VOLUME /my-app
-COPY ./src /my-app/src
+COPY ./src /sfdx-api-graph/src
+COPY ./public /sfdx-api-graph/public
 
 EXPOSE 3000 
 

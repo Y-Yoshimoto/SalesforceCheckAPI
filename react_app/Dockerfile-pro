@@ -1,20 +1,24 @@
 # FROM node:latest
-FROM node:alpine AS builder
+FROM node:14-alpine AS builder
 LABEL maintaner='y-yoshimoto'
+ENV APPNAME sfdx-api-graph
 
-RUN npx create-react-app my-app && \
-    rm -rf /my-app/src/*
-# Remove Sample
-WORKDIR /my-app
-COPY src/ /my-app/src/
+RUN mkdir -p /$APPNAME/src && mkdir -p /$APPNAME/public
+WORKDIR /$APPNAME
 
+COPY ./package.json /$APPNAME/package.json
+
+RUN yarn install
+COPY ./src /sfdx-api-graph/src
+COPY ./public /sfdx-api-graph/public
 RUN yarn build
 
 # React App set Nginx
 FROM nginx
 LABEL  maintainer "y.yoshimoto"
+ENV APPNAME sfdx-api-graph
 # コンテツファイルの設置
-COPY --from=builder /my-app/build/ /usr/share/nginx/html/
+COPY --from=builder /$APPNAME/build/ /usr/share/nginx/html/
 
 # nginx設定ファイルの設置
 COPY nginx.conf /etc/nginx/nginx.conf

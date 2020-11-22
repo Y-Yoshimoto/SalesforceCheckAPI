@@ -12,4 +12,4 @@ services:
       - TZ=Asia/Tokyo
     stdin_open: true
     volumes:
-      - ./src:/my-app/src
+      - ./src:/sfdx-api-graph/src

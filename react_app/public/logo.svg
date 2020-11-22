@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0" y="0" width="512" height="512" viewBox="0, 0, 512, 512">
+  <defs>
+    <pattern id="Pattern_1" patternUnits="userSpaceOnUse" x="0" y="0" width="80" height="80" patternTransform="matrix(2, 0, 0, 2, 0, 0)">
+      <g transform="translate(0, -0)">
+        <path d="M0,0 L80,0 L80,80 L0,80 L0,0 z" fill="#00BAF7"/>
+        <path d="M-0,10 L80,10 L80,30 L-0,30 L-0,10 z" fill="#00AAF5"/>
+        <path d="M-0,50 L80,50 L80,70 L-0,70 L-0,50 z" fill="#00AAF5"/>
+      </g>
+    </pattern>
+  </defs>
+  <g id="レイヤー_1">
+    <g>
+      <path d="M65.156,0 L446.844,0 C482.829,0 512,28.654 512,64 L512,448 C512,483.346 482.829,512 446.844,512 L65.156,512 C29.171,512 0,483.346 0,448 L0,64 C0,28.654 29.171,0 65.156,0 z" fill="url(#Pattern_1)"/>
+      <path d="M65.156,0 L446.844,0 C482.829,0 512,28.654 512,64 L512,448 C512,483.346 482.829,512 446.844,512 L65.156,512 C29.171,512 0,483.346 0,448 L0,64 C0,28.654 29.171,0 65.156,0 z" fill-opacity="0" stroke="#CBCBCB" stroke-width="0.2"/>
+    </g>
+    <text transform="matrix(1, 0, 0, 1, 347.933, 433.508)">
+      <tspan x="-251.3" y="19" font-family="AvenirNext-BoldItalic" font-size="250" fill="#FFE436">sau</tspan>
+    </text>
+  </g>
+</svg>

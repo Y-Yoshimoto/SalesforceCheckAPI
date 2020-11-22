@@ -21,8 +21,8 @@ do
     uri="http://apatchphp_webapp/register/"
     data={'"key"':"$Unixtime",'"value"':$RANDOM}
 
-    curl -L -X POST -H "Content-Type: application/json" -d $data $uri
+    curl -s -L -X POST -H "Content-Type: application/json" -d $data $uri
 
-    sleep 5
+    sleep 10
 
 done
