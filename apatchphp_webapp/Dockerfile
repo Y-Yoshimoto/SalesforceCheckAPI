@@ -1,7 +1,5 @@
 FROM php:7.2-apache
-MAINTAINER y.yoshimoto
-# https://hub.docker.com/_/php
-
+LABEL maintaner='y-yoshimoto'
 ## SSL通信用ライブラリ
 RUN apt-get update && apt-get install -y libcurl4-openssl-dev pkg-config libssl-dev\
     && apt-get clean \
@@ -20,7 +18,6 @@ RUN pecl install redis-5.0.2\
 
 ## 設定ファイル設置
 COPY php.ini /usr/local/etc/php/
-COPY inquiry.inc /var/www/inc/
 
 ## コンテツファイルの設置
 COPY contents/* /var/www/html/
