@@ -1,54 +1,183 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
-import Title from './Title';
+import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import { theme } from "./theme";
 
-// Generate Sales Data
-function createData(time, amount) {
-    return { time, amount };
+// グラフ用
+// https://recharts.org/en-US
+import {
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Text, Cell,
+} from 'recharts';
+import moment from 'moment';
+
+let GETUSEINFOURI = 'http://192.168.1.7/api/';
+let MAXAPIUSERD = parseInt(32767);
+let heightCharts = 400;
+
+//グラフグリッド表示 
+export class CharComponent extends React.Component {
+    render() {
+        return (
+            <Grid container className={theme.root} spacing={1}>
+                <Grid item lg={9} md={9} sm={12} xs={12} >
+                    <Card ><CharCard value={"API使用履歴"} /><APIReqsInfoData /></Card>
+                </Grid >
+                <Grid item lg={3} md={3} sm={12} xs={12}>
+                    <Card><CharCard value={"API平均使用量(直近1日)"} /><APIReqsInfoNow /></Card>
+                </Grid>
+            </Grid >
+        )
+    }
+}
+//表示用カードレンダリング
+class CharCard extends React.Component {
+    render() {
+        return (
+            <CardContent>
+                <Typography className={theme.title} color="textSecondary" gutterBottom>
+                    {this.props.value}
+                </Typography>
+            </CardContent>
+        )
+    }
 }
 
-const data = [
-    createData('00:00', 0),
-    createData('03:00', 300),
-    createData('06:00', 600),
-    createData('09:00', 800),
-    createData('12:00', 1500),
-    createData('15:00', 2000),
-    createData('18:00', 2400),
-    createData('21:00', 2400),
-    createData('24:00', undefined),
-];
+// UnixTimeからの変換
+function convert(data) {
+    const result = data.map((d) => {
+        return {
+            time: moment(d.time, 'X').format("YYYY-MM-DD HH:mm:ss"),
+            val: d.val
+        }
+    })
+    result.sort((a, b) => a.time < b.time ? -1 : 1)
+    return result
+}
+/****** 面グラフ表示　コンポーネント  ******/
+class APIReqsInfoData extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            APIReqsdata: []
+        };
+    }
+    // 値取得
+    componentDidMount() {
+        const uri = GETUSEINFOURI + 'exportdata/';
+        fetch(uri)
+            .then(response => response.json())
+            .then(result => {
+                this.setState({
+                    isLoaded: true,
+                    APIReqsdata: convert(result)
+                });
+                //console.log(convert(result))
+            })
+            .catch(error => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+                alert('Server Error.')
+            })
+    }
 
-export default function Chart() {
-    const theme = useTheme();
-
-    return (
-        <React.Fragment>
-            <Title>Today</Title>
-            <ResponsiveContainer>
-                <LineChart
-                    data={data}
+    // レンダリング
+    render() {
+        //gatData()
+        return (
+            <ResponsiveContainer width="100%" height={heightCharts}>
+                <AreaChart
+                    data={this.state.APIReqsdata}
                     margin={{
-                        top: 16,
-                        right: 16,
-                        bottom: 0,
-                        left: 24,
-                    }}
-                >
-                    <XAxis dataKey="time" stroke={theme.palette.text.secondary} />
-                    <YAxis stroke={theme.palette.text.secondary}>
-                        <Label
-                            angle={270}
-                            position="left"
-                            style={{ textAnchor: 'middle', fill: theme.palette.text.primary }}
-                        >
-                            Sales ($)
-            </Label>
-                    </YAxis>
-                    <Line type="monotone" dataKey="amount" stroke={theme.palette.primary.main} dot={false} />
-                </LineChart>
+                        top: 0, right: 20, left: 20, bottom: 0,
+                    }}>
+                    <defs>
+                        <linearGradient id="colorGr" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="50%" stopColor="#007EB1" stopOpacity={0.8} />
+                            <stop offset="100%" stopColor="#007EB1" stopOpacity={0} />
+                        </linearGradient>
+                    </defs>
+                    <XAxis
+                        dataKey="time"
+                        domain={["dataMin", "dataMax"]}
+                        tickFormatter={(t) => moment(t).format("HH:mm:ss")}
+                    />
+                    < YAxis label={{ value: "使用回数", angle: -90, offset: -5, position: "insideLeft" }} />
+                    <CartesianGrid vertical={false} stroke="#DDD" />
+                    <Tooltip />
+                    <Legend verticalAlign="bottom" />
+                    <Area type="monotone" dataKey="val" name="使用回数" legendType="none" stroke="#064583" fill="url(#colorGr)" />
+                </AreaChart>
             </ResponsiveContainer>
-        </React.Fragment>
-    );
+        );
+    }
+}
+/****** 円グラフ表示　コンポーネント  ******/
+// 表示ラベル
+const label = ({ name, value, fill, cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+    //数量パーセンテージ表
+    const pielabel = String(value) + "(" + String((value / MAXAPIUSERD).toFixed(2)) + "%)";
+    //表示位置調整
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    return (
+        <>
+            <Text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+                {name}
+            </Text>
+            <Text x={x} y={y + 18} dominantBaseline="hanging" fill="black" textAnchor={x > cx ? 'start' : 'end'}>{pielabel}</Text>
+
+        </>
+    )
+}
+
+class APIReqsInfoNow extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: null,
+            isLoaded: false,
+            APIReqsdata: []
+        };
+    }
+    // 値取得
+    componentDidMount() {
+        const uri = GETUSEINFOURI + 'exportaverage/';
+        fetch(uri)
+            .then(response => response.json())
+            .then(result => {
+                this.setState({
+                    isLoaded: true,
+                    APIReqsdata: result
+                });
+                //console.log(result)
+            })
+            .catch(error => {
+                this.setState({
+                    isLoaded: true,
+                    error
+                });
+                alert('Server Error.')
+            })
+    }
+    render() {
+        const COLORS = ['#FFA826', '#93D6A4']
+        return (
+            <ResponsiveContainer width="100%" height={heightCharts} onMouseEnter={this.onPieEnter}>
+                <PieChart>
+                    <Pie data={this.state.APIReqsdata} dataKey="value" label={label} labelLine={false} startAngle={180} endAngle={-180} minAngle={1}>
+                        {
+                            this.state.APIReqsdata.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
+                        } </Pie>
+                </PieChart>
+            </ResponsiveContainer>
+        );
+    }
 }

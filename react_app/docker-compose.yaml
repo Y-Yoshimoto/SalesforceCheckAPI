@@ -13,3 +13,4 @@ services:
     stdin_open: true
     volumes:
       - ./src:/sfdx-api-graph/src
+      - ./public:/sfdx-api-graph/public

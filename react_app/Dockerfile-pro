@@ -11,6 +11,7 @@ COPY ./package.json /$APPNAME/package.json
 RUN yarn install
 COPY ./src /sfdx-api-graph/src
 COPY ./public /sfdx-api-graph/public
+
 RUN yarn build
 
 # React App set Nginx

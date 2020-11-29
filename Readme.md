@@ -2,8 +2,11 @@
 
 ## API
 - exportdata
-    データ出力
+    全データ出力
     curl http://127.0.0.1/api/exportdata/
+- exportaverage
+    平均データ出力
+    curl http://127.0.0.1/api/exportaverage/
 - register
     データ登録
     curl http://127.0.0.1/api/register/

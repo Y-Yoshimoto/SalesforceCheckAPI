@@ -43,6 +43,6 @@ services:
             dockerfile: Dockerfile-pro
         ports:
             - "80:80"
-        # restart: always
+        restart: always
         environment:
             - TZ=Asia/Tokyo
