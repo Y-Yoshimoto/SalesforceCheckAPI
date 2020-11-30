@@ -45,15 +45,9 @@ class CharCard extends React.Component {
 }
 
 // UnixTimeからの変換
-function convert(data) {
-    const result = data.map((d) => {
-        return {
-            time: moment(d.time, 'X').format("YYYY-MM-DD HH:mm:ss"),
-            val: d.val
-        }
-    })
-    result.sort((a, b) => a.time < b.time ? -1 : 1)
-    return result
+function sorttime(data) {
+    data.sort((a, b) => a.time < b.time ? -1 : 1)
+    return data
 }
 /****** 面グラフ表示　コンポーネント  ******/
 class APIReqsInfoData extends React.Component {
@@ -73,9 +67,9 @@ class APIReqsInfoData extends React.Component {
             .then(result => {
                 this.setState({
                     isLoaded: true,
-                    APIReqsdata: convert(result)
+                    APIReqsdata: sorttime(result)
                 });
-                //console.log(convert(result))
+                console.log(sorttime(result))
             })
             .catch(error => {
                 this.setState({
@@ -105,7 +99,8 @@ class APIReqsInfoData extends React.Component {
                     <XAxis
                         dataKey="time"
                         domain={["dataMin", "dataMax"]}
-                        tickFormatter={(t) => moment(t).format("HH:mm:ss")}
+                        tickFormatter={(unixTime) => moment(unixTime).format('MM/DD HH:mm')}
+                        type='number'
                     />
                     < YAxis label={{ value: "使用回数", angle: -90, offset: -5, position: "insideLeft" }} />
                     <CartesianGrid vertical={false} stroke="#DDD" />
@@ -117,11 +112,13 @@ class APIReqsInfoData extends React.Component {
         );
     }
 }
+//                         tickFormatter={(t) => moment(t, 'X').format("MM-DD HH:mm")}
+
 /****** 円グラフ表示　コンポーネント  ******/
 // 表示ラベル
 const label = ({ name, value, fill, cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
     //数量パーセンテージ表
-    const pielabel = String(value) + "(" + String((value / MAXAPIUSERD).toFixed(2)) + "%)";
+    const pielabel = String(value) + "(" + String((value / MAXAPIUSERD * 100.0).toFixed(2)) + "%)";
     //表示位置調整
     const RADIAN = Math.PI / 180;
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;

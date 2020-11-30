@@ -11,8 +11,9 @@ services:
             - USERNAME=jdoe@acdxgs0hub.org
             - CLIENTID=ids
             - SFDCLOGINURL=https://test.salesforce.com
-        #volumes:
-        #    - ./openjdk/code:/code
+        #logging:
+        #driver: "journald"
+
     apatchphp_webapp:
         image: apatchphp_webapp
         build: apatchphp_webapp
@@ -27,6 +28,7 @@ services:
         #    driver: "journald"
         volumes:
             - ./apatchphp_webapp/contents/:/var/www/html/
+
     radisds:
         image: redisds
         build: redisds
@@ -36,6 +38,7 @@ services:
         # command: redis-server --appendonly yes
         #volumes:
         #    - /radis_data:/data
+
     react_app:
         image: react_app
         build:

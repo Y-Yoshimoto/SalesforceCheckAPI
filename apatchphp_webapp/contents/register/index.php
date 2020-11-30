@@ -6,6 +6,6 @@
     $redis = new Redis();
     $redis->connect('radisds', 6379);
     #$redis->set($contents["key"], $contents["value"], 172800); # 2Day alive
-    $redis->set($contents["key"], $contents["value"], 600); # 60s alive
+    $redis->set($contents["key"], $contents["value"], 3600); # 60m alive
     exit;
 ?>

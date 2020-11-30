@@ -11,7 +11,4 @@ export const theme = createMuiTheme({
         primary: blue,
         secondary: red
     },
-    root: {
-        flexGrow: 1,
-    },
 });

@@ -15,5 +15,5 @@ COPY ./public /sfdx-api-graph/public
 
 EXPOSE 3000 
 
-ENTRYPOINT ["tail", "-f", "/dev/null"]
-#ENTRYPOINT ["yarn", "start"]
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
+ENTRYPOINT ["yarn", "start"]

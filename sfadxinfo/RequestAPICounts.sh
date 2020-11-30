@@ -1,28 +1,30 @@
 #!/bin/bash
 
-# sfdx force:auth:web:login -r https://test.salesforce.com -a sand1
-
-#sfdx force:auth:jwt:grant --clientid 04580y4051234051 \
-#--jwtkeyfile ./sfadxinfo.pem --username jdoe@acdxgs0hub.org \
-#--setdefaultdevhubusername --setalias my-sfa-org
 
 # echo $TZ
 # echo $USERNAME
 # echo $CLIENTID
 # echo $SFDCLOGINURL
+# echo $MAXAPIUSERD
+MAXAPIUSERD='32767'
+#sfdx force:auth:jwt:grant --clientid 04580y4051234051 \
+#--jwtkeyfile ./sfadxinfo.pem --username jdoe@acdxgs0hub.org \
+#--setdefaultdevhubusername --setalias sfadxinfo
+
 
 while true
 do
-    #sfdx force:limits:api:display -u sandbox
+    #value=$(sfdx force:limits:api:display -u jdoe@acdxgs0hub.org| grep DailyApiRequests|awk '{print $2}')
+    #used=$(($MAXAPIUSERD-$value))
     date "+%Y/%m/%d %H:%M:%S"
     Unixtime=`date +%s`
-    echo $Unixtime
+    #echo $Unixtime
 
     uri="http://apatchphp_webapp/register/"
     data={'"key"':"$Unixtime",'"value"':$RANDOM}
 
-    curl -s -L -X POST -H "Content-Type: application/json" -d $data $uri
+    curl  --noproxy "*" -s -L -X POST -H "Content-Type: application/json" -d $data $uri
 
-    sleep 10
+    sleep 60
 
 done
