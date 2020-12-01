@@ -99,7 +99,7 @@ class APIReqsInfoData extends React.Component {
                     <XAxis
                         dataKey="time"
                         domain={["dataMin", "dataMax"]}
-                        tickFormatter={(unixTime) => moment(unixTime).format('MM/DD HH:mm')}
+                        tickFormatter={(unixTime) => moment(unixTime, ‘X’).format('MM/DD HH:mm')}
                         type='number'
                     />
                     < YAxis label={{ value: "使用回数", angle: -90, offset: -5, position: "insideLeft" }} />
