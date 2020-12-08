@@ -104,7 +104,10 @@ class APIReqsInfoData extends React.Component {
                     />
                     < YAxis label={{ value: "使用回数", angle: -90, offset: -5, position: "insideLeft" }} />
                     <CartesianGrid vertical={false} stroke="#DDD" />
-                    <Tooltip />
+                    <Tooltip 
+                         labelFormatter={(unixTime) => moment(unixTime, ‘X’).format('MM/DD HH:mm')}
+
+                     />
                     <Legend verticalAlign="bottom" />
                     <Area type="monotone" dataKey="val" name="使用回数" legendType="none" stroke="#064583" fill="url(#colorGr)" />
                 </AreaChart>
