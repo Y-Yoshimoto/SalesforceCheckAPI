@@ -4,7 +4,7 @@
     $redis->connect('radisds', 6379);
 
     # API上限値設定
-    $MAXAPIUSERD=intval('32767');
+    $MAXAPIUSERD=intval('15000');
 
     $n=10;
     # Radis上の直近n個のデータ取得

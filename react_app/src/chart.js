@@ -12,8 +12,8 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-let GETUSEINFOURI = 'http://192.168.1.7/api/';
-let MAXAPIUSERD = parseInt(32767);
+let GETUSEINFOURI = 'http://192.168.1.21/api/';
+let MAXAPIUSERD = parseInt(15000);
 let heightCharts = 400;
 
 //グラフグリッド表示 
@@ -99,15 +99,15 @@ class APIReqsInfoData extends React.Component {
                     <XAxis
                         dataKey="time"
                         domain={["dataMin", "dataMax"]}
-                        tickFormatter={(unixTime) => moment(unixTime, ‘X’).format('MM/DD HH:mm')}
+                        tickFormatter={(unixTime) => moment(unixTime, "X").format('MM/DD HH:mm')}
                         type='number'
                     />
                     < YAxis label={{ value: "使用回数", angle: -90, offset: -5, position: "insideLeft" }} />
                     <CartesianGrid vertical={false} stroke="#DDD" />
-                    <Tooltip 
-                         labelFormatter={(unixTime) => moment(unixTime, ‘X’).format('MM/DD HH:mm')}
+                    <Tooltip
+                        labelFormatter={(unixTime) => moment(unixTime, "X").format('MM/DD HH:mm')}
 
-                     />
+                    />
                     <Legend verticalAlign="bottom" />
                     <Area type="monotone" dataKey="val" name="使用回数" legendType="none" stroke="#064583" fill="url(#colorGr)" />
                 </AreaChart>

@@ -7,12 +7,12 @@ services:
         #restart: always
         restart: "no"
         environment:
-            - TZ=Asia/Tokyo
-            - USERNAME=jdoe@acdxgs0hub.org
-            - CLIENTID=ids
-            - SFDCLOGINURL=https://test.salesforce.com
-        #logging:
-        #driver: "journald"
+            TZ: ${TZ}
+            USERNAME: ${USERNAME}
+            CLIENTID: ${CLIENTID}
+            JWTKEYFILE: ${JWTKEYFILE}
+        logging:
+            driver: ${LOGDRIVER}
 
     apatchphp_webapp:
         image: apatchphp_webapp
@@ -23,9 +23,9 @@ services:
         ports:
             - "80"
         environment:
-            TZ: Asia/Tokyo
-        #logging:
-        #    driver: "journald"
+            TZ: ${TZ}
+        logging:
+            driver: ${LOGDRIVER}
         volumes:
             - ./apatchphp_webapp/contents/:/var/www/html/
 
@@ -36,6 +36,8 @@ services:
         ports:
             - "6379:6379"
         # command: redis-server --appendonly yes
+        logging:
+            driver: ${LOGDRIVER}
         #volumes:
         #    - /radis_data:/data
 
@@ -48,4 +50,6 @@ services:
             - "80:80"
         restart: always
         environment:
-            - TZ=Asia/Tokyo
+            TZ: ${TZ}
+        logging:
+            driver: ${LOGDRIVER}
