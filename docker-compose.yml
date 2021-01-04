@@ -4,8 +4,8 @@ services:
     sfadxinfo:
         build: sfadxinfo
         image: sfadxinfo
-        #restart: always
-        restart: "no"
+        restart: always
+        #restart: "no"
         environment:
             TZ: ${TZ}
             USERNAME: ${USERNAME}
@@ -53,3 +53,14 @@ services:
             TZ: ${TZ}
         logging:
             driver: ${LOGDRIVER}
+
+    influxdb:
+        image: influxdb_c
+        build: influxdb_c
+        restart: "always"
+        ports:
+            - "8086:8086"
+        logging:
+            driver: ${LOGDRIVER}
+        #volumes:
+        #    - ./influxdb_c/data:/var/lib/influxdb

@@ -12,7 +12,7 @@ import {
 } from 'recharts';
 import moment from 'moment';
 
-let GETUSEINFOURI = 'http://192.168.1.21/api/';
+let GETUSEINFOURI = 'http://127.0.0.1/api/';
 let MAXAPIUSERD = parseInt(15000);
 let heightCharts = 400;
 
@@ -106,7 +106,6 @@ class APIReqsInfoData extends React.Component {
                     <CartesianGrid vertical={false} stroke="#DDD" />
                     <Tooltip
                         labelFormatter={(unixTime) => moment(unixTime, "X").format('MM/DD HH:mm')}
-
                     />
                     <Legend verticalAlign="bottom" />
                     <Area type="monotone" dataKey="val" name="使用回数" legendType="none" stroke="#064583" fill="url(#colorGr)" />
